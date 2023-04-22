@@ -10,12 +10,25 @@ window.addEventListener("load", function () {
   const btnOk = document.querySelector(".btnOk");
   const err = document.querySelector(".error");
   var dots = Array.from(document.querySelectorAll(".eleStyle"));
+  var dotsRep = Array.from(document.querySelectorAll(".repArr"));
+  var dotsPoly = Array.from(document.querySelectorAll(".polyArr"));
+  const bhaibhai = document.querySelector(".bhaibhai");
+  const repressor = document.querySelectorAll(".repressor");
+  const polymerase = document.querySelectorAll(".poly");
+  const mediumSelect = document.querySelector("#medium");
   // const ifMatch= document.querySelector('.ifMatch');
   const setFull = document.querySelectorAll(".setFull");
   let query = window.matchMedia("(max-width:800px)");
   err.style.display = "none";
   containerB.style.display = "none";
+  bhaibhai.style.display = "none";
   overL.style.display = "none";
+  repressor.forEach((i) => {
+    i.style.display = "none";
+  });
+  polymerase.forEach((i) => {
+    i.style.display = "none";
+  });
   let query1 = window.matchMedia("(max-width:480px)");
   if (query1.matches) {
     document.querySelector(".btnOk1").style.display = "block";
@@ -33,8 +46,18 @@ window.addEventListener("load", function () {
     document.exitFullscreen();
     httja.style.display = "flex";
     nav.style.display = "grid";
+    bhaibhai.style.display = "none";
     containerB.style.display = "none";
     setFull.style.display = "none";
+    lacOpBackground.src = "images/background.svg";
+    repressor.forEach((i) => {
+      i.style.display = "none";
+    });
+    
+    polymerase.forEach((i) => {
+      i.style.display = "none";
+    });
+    
     simHead.classList.replace("sim--head-full", "sim--head");
     fullSc.classList.replace("full-sc-click", "full-sc");
     lacOpBackground.classList.replace(
@@ -62,6 +85,9 @@ window.addEventListener("load", function () {
     containerB.style.display = "block";
     httja.style.display = "none";
     nav.style.display = "none";
+    repressor.forEach((i) => {
+      i.style.display = "block";
+    });
     setFull.forEach((e) => {
       e.style.display = "block";
     });
@@ -206,6 +232,97 @@ window.addEventListener("load", function () {
           gsap.to("#recP1", {
             display: "block",
           });
+        }
+      },
+    });
+    // TweenMax.to(repressor, 7, {
+    //   // autoAlpha: 0,
+    //   translateY: -(Math.floor(Math.random() * 100) + 300),
+    //   translateX: Math.floor(Math.random() * 100) + 200,
+    //   // repeat: 10,
+    //   yoyo: true,
+    // });
+
+    mediumSelect.addEventListener("change", function () {
+      if (mediumSelect.value == "Glucose") {
+        tweenRandDot2();
+        polymerase.forEach((i) => {
+          i.style.display = "block";
+        });
+        tweenRandDot3();
+      }
+    });
+    function tweenRandDot2(lastDot) {
+      var availableDots = dotsRep.filter(function (dot) {
+        return dot !== lastDot;
+      });
+
+      var index = Math.floor(Math.random() * availableDots.length);
+      var newDot = availableDots[index];
+
+      TweenMax.to(newDot, 5, {
+        // autoAlpha: 0,
+        translateY: -(Math.floor(Math.random() * 100) + 400),
+        translateX: Math.floor(Math.random() * 400) + 130,
+        // repeat: 1,
+        yoyo: true,
+        onComplete: tweenRandDot2,
+        onCompleteParams: [newDot],
+      });
+    }
+    function tweenRandDot3(lastDot) {
+      var availableDots = dotsPoly.filter(function (dot) {
+        return dot !== lastDot;
+      });
+
+      var index = Math.floor(Math.random() * availableDots.length);
+      var newDot = availableDots[index];
+
+      TweenMax.to(newDot, 2, {
+        // autoAlpha: 0,
+        translateY: 10,
+        repeat: 1,
+        yoyo: true,
+        onComplete: tweenRandDot3,
+        onCompleteParams: [newDot],
+      });
+    }
+    Draggable.create(".repressor", {
+      bounds: "#Lac-Op",
+      onDrag: function () {
+        if (this.hitTest("#bhlk_4")) {
+          bhaibhai.style.display = "block";
+          this.style.display='none'
+        }
+      },
+    });
+    Draggable.create(".pl1", {
+      bounds: "#Lac-Op",
+      onDrag: function () {
+        if (this.hitTest("#bhlk_4")) {
+          TweenLite.to('.pl1',{
+            translateY: 0
+          })
+        }
+      },
+    });
+    Draggable.create(".pl2", {
+      bounds: "#Lac-Op",
+      onDrag: function () {
+        if (this.hitTest("#bhlk_4")) {
+          TweenLite.to('.pl2',{
+            translateY: 0
+          })
+        }
+      },
+    });
+    Draggable.create(".pl3", {
+      bounds: "#Lac-Op",
+      onDrag: function () {
+        if (this.hitTest("#bhlk_4")) {
+          TweenLite.to('.pl3',{
+            translateY: 0
+          })
         }
       },
     });
